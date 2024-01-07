@@ -2,9 +2,11 @@ import 'package:data_guard/buttons/my_button.dart';
 import 'package:flutter/material.dart';
 
 class pulseButton extends StatefulWidget {
-  final void Function()? onTap;
-
-  pulseButton({Key? key, required this.onTap}) : super(key: key);
+  void Function()? onPulseTap;
+  pulseButton({
+    Key? key,
+    required this.onPulseTap,
+  }) : super(key: key);
 
   @override
   State<pulseButton> createState() => _MyOnButtonState();
@@ -15,7 +17,6 @@ class _MyOnButtonState extends State<pulseButton>
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
-  bool isTapped = true;
 
   @override
   void initState() {
@@ -50,28 +51,29 @@ class _MyOnButtonState extends State<pulseButton>
 
       // outter pulsating circle
 
-      if (isTapped)
-        FadeTransition(
-          opacity: _scaleAnimation,
-          child: ScaleTransition(
-            scale: _fadeAnimation,
-            child: Container(
-              width: 100 * 1.5,
-              height: 100 * 1.5,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [
-                    Color(0xFFFD5EF3),
-                    Color(0x4DD4FF),
-                  ],
-                ),
+      FadeTransition(
+        opacity: _scaleAnimation,
+        child: ScaleTransition(
+          scale: _fadeAnimation,
+          child: Container(
+            width: 100 * 1.5,
+            height: 100 * 1.5,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFFFD5EF3),
+                  Color(0x4DD4FF),
+                ],
               ),
             ),
           ),
         ),
+      ),
       //mybutton
-      const MyButton(),
+      MyButton(
+        onTap: widget.onPulseTap,
+      ),
     ]);
   }
 
